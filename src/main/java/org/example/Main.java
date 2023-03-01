@@ -64,10 +64,7 @@ public class Main {
          les deux instanciation  ne represente qu'une seule au niveau de la memoire*/
         accountRepository.populateData();
         List<BankAccount> bankAccountsList= accountRepository.findAll();
-       // bankAccountsList.forEach(System.out::println);
-       // bankAccountsList.forEach(bankAccountJsonSerializer::toJson);
         bankAccountsList.stream()
-                //.map(acc->bankAccountJsonSerializer.toJson(acc))
                 .map(bankAccountJsonSerializer::toJson)
                 .forEach(System.out::println);
 
