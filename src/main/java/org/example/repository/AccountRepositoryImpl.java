@@ -1,6 +1,9 @@
 package org.example.repository;
 
+import org.example.model.AccountStatus;
+import org.example.model.AccountType;
 import org.example.model.BankAccount;
+import org.example.model.BankDirector;
 
 import java.util.HashMap;
 import java.util.List;
@@ -59,10 +62,16 @@ public class AccountRepositoryImpl implements AccountRepository {
         bankAccountMap.remove(id);
 
     }
-    // une methode pour creer des objet account
+    // une methode pour creer des objet account aléatoires
     public void populateData(){
         for (int i = 0; i <10 ; i++) {
-            BankAccount bankAccount=new BankAccount();
+            BankAccount MonCompte = BankDirector.AccountBuilder()
+                    .balance(5000+Math.random()*10000)
+                    .type(Math.random()>0.5? AccountType.CURRENT_ACCOUNT:AccountType.SAVING_ACCOUNT)
+                    .status(Math.random()>0.50? AccountStatus.CREATED:AccountStatus.SUSPENDED)
+                    .currency(Math.random()>0.5? "$":"Euros")
+                    .build();
+            save(MonCompte);
 
 
         }

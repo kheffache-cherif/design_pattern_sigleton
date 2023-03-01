@@ -69,11 +69,12 @@ public class BankAccount {
                 '}';
     }
 
-    //une methode static qui return un objet AccountBuilder
+    /*---------------------une methode static qui return un objet AccountBuilder-------------------------
     public static AccountBuilder MonBuilder(){
         return new AccountBuilder();
     }
-
+    Cette methode est creéer de preference dans une autre class Director
+*/
     // ***************Creation dune class interne que pour construire les compte *************///
     public static class AccountBuilder {
         private BankAccount bankAccount = new BankAccount();
