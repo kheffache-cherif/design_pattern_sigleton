@@ -11,10 +11,15 @@ import org.example.repository.AccountRepositoryImpl;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
+
+
+        System.out.println("************************ AFFICHAGE FindAll() *********************************************");
         /* Creation de l'objet avec constructeur SANS params
         BankAccount bankAccount = new BankAccount();
         bankAccount.setAccountId(2L);
@@ -48,13 +53,43 @@ public class Main {
 
         JsonSerializer<BankAccount> bankAccountJsonSerializer = new JsonSerializer<>();
 
-        AccountRepositoryImpl accountRepository = new AccountRepositoryImpl();
+    // ----> sans le singleton
+        // AccountRepositoryImpl accountRepository = new AccountRepositoryImpl();
+    // ---> Avec le singleton
+        AccountRepositoryImpl accountRepository = AccountRepositoryImpl.getInstance();
+        /*
+        AccountRepositoryImpl accountRepository2 = AccountRepositoryImpl.getInstance();
+        AccountRepositoryImpl accountRepository3 = AccountRepositoryImpl.getInstance();
+
+         les deux instanciation  ne represente qu'une seule au niveau de la memoire*/
         accountRepository.populateData();
         List<BankAccount> bankAccountsList= accountRepository.findAll();
        // bankAccountsList.forEach(System.out::println);
        // bankAccountsList.forEach(bankAccountJsonSerializer::toJson);
         bankAccountsList.stream()
                 //.map(acc->bankAccountJsonSerializer.toJson(acc))
+                .map(bankAccountJsonSerializer::toJson)
+                .forEach(System.out::println);
+
+        System.out.println("************************ AFFICHAGE findById(2L) *********************************************");
+
+        BankAccount account = accountRepository.findById(2L).orElse(null);
+        if(account!=null){
+            System.out.println(bankAccountJsonSerializer.toJson(account));
+        }
+        System.out.println("************************ AFFICHAGE serchAccount " +
+                " aFFICHAGE QUE DES COMPTE COURANT *********************************************");
+
+// utilsation de predicate ----> interface avec la methode test
+        List<BankAccount> bankAccounts= accountRepository.searchAccount(new Predicate<BankAccount>() {
+            @Override  // POSSIBLE DE FAIRE AVEC EXPRESSION LAMBDA
+            public boolean test(BankAccount accountPredicate) {
+                return (accountPredicate.getType().equals(AccountType.CURRENT_ACCOUNT) &&(accountPredicate.getBalance()>7000));
+            }
+        });
+
+        bankAccounts.stream()
+
                 .map(bankAccountJsonSerializer::toJson)
                 .forEach(System.out::println);
     }

@@ -14,6 +14,23 @@ import java.util.stream.Collectors;
 
 public class AccountRepositoryImpl implements AccountRepository {
 
+// 1---> une variable qui porte le meme nom que la class à instancier comme un singleton
+    static final AccountRepositoryImpl accountRepository;
+    //final = une fois la valeur définie ---> non modifiable
+// 2 ---> Initialiser la variable dans un bloc static
+
+    // le block static est toujours le premier à s'initialiser au demarrage
+    static {
+        System.out.println("Singleton initialisation");
+        accountRepository = new AccountRepositoryImpl();
+    }
+ // 5 ----> Utilisation: Inetrdire l'instanciation en dehors de cette class via un constructeur privé
+    // c'est la methode get instance qui fait le boulot
+    private AccountRepositoryImpl(){
+
+
+    }
+
     //les comptes seront stockés dans une collection de type Map
     private Map<Long,BankAccount>bankAccountMap=new HashMap<>();
     // un autoincriment pour les comptes
@@ -75,5 +92,14 @@ public class AccountRepositoryImpl implements AccountRepository {
 
 
         }
+    }
+    // 3---> pour utiliser le sigleton on cree une methode static qui return la class l'instance  .
+    public  static  AccountRepositoryImpl getInstance(){
+      /* if(accountRepository==null){
+        ccountRepositoryImpl = new AccountRepositoryImpl()
+        + Enlever le block static et la restriction final
+
+        }*/
+        return accountRepository;
     }
 }
