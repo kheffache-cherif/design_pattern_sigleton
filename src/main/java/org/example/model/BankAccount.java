@@ -1,11 +1,12 @@
 package org.example.model;
 
-public class BankAccount {
+public class BankAccount implements  Cloneable {  // ---> Cloneable veut dire que c'est un objet que on peu clonner
     private Long accountId;
     private double balance;
     private String currency;
     private AccountType type;
     private AccountStatus status;
+    private Customer customer;
 
     public Long getAccountId() {
         return accountId;
@@ -68,8 +69,16 @@ public class BankAccount {
                 ", status=" + status +
                 '}';
     }
+    /******************* Partie avec clone avec  l'ajout du custommer ************************/
+    public Customer getCustomer() {
+        return customer;
+    }
 
-    /*---------------------une methode static qui return un objet AccountBuilder-------------------------
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    /*---------------------une methode static qui return un objet AccountBuilder-------------------------/
     public static AccountBuilder MonBuilder(){
         return new AccountBuilder();
     }
@@ -109,5 +118,20 @@ public class BankAccount {
         public  BankAccount build(){
             return this.bankAccount;  // du   bankAccount = new BankAccount(); ---->
         }
+    }
+/* *************************** Pour utiliser le pattern prototype il faut redefinir la methode clone
+    - Elle herite de la class object
+    - Elle est protected donc la redefinir acces jute dans le package et class dérivée ---> la rendre public
+    - Remplacer objectn avec le nom de l'objet à cloner
+    - Comme elle retourn un objet de type Object  ----> faire un cast vers cette objet .(BankAccount)
+     - La methode clone se charge d'aller à la memoire et clonner l'objet
+     - Comme la methode leve une exception donc la soulever dan le main
+     */
+    @Override
+    public BankAccount clone() throws CloneNotSupportedException {
+        BankAccount bankAccount= (BankAccount) super.clone();
+        //Je veux cloner aussi l'objet customer
+        bankAccount.setCustomer(this.customer.clone());
+        return bankAccount;
     }
 }
