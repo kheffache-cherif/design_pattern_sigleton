@@ -3,15 +3,16 @@ package org.example;
 import org.example.model.AccountStatus;
 import org.example.model.AccountType;
 import org.example.model.BankAccount;
+import org.example.model.Customer;
 
 public class TestClonePatternPrototypeWithTwoObject {
     public static void main(String[] args) throws CloneNotSupportedException {
 
 
         /* Dans cette partie on rajoute un atribut Customer pour l'objet BankAccount
-        *
-        *
-        *
+        * Creation de l'objet Custumer qui impliments l'interface cloneable
+        * Redefinition de la methode clone dans Custumer
+        * Ajout du clone custumer à la methode clone de l'objetBankAccount
         *
         *
         *  */
@@ -22,6 +23,7 @@ public class TestClonePatternPrototypeWithTwoObject {
         account1.setCurrency("Dinnards");
         account1.setType(AccountType.SAVING_ACCOUNT);
         account1.setStatus(AccountStatus.CREATED);
+        account1.setCustomer(new Customer(3L,"Zidane "));
 
         //************************ Une copie en utilisant le pattern Prototype ******************/
 
@@ -32,11 +34,16 @@ public class TestClonePatternPrototypeWithTwoObject {
 
 
 //******************************************Affichage ****************************************/
-        System.out.println("                     Affichage du  compte 1 ="+ account1);
+        System.out.println( account1);   // nameCustomer = zidane
+                                                                // --> le meme objet customer
+        System.out.println(account3);   // // nameCustomer = zidane
+//**************************************** test apres modification ****************************/
 
-        System.out.println("Affichage du  compte 3 le clone du copmte 1 ="+account3);
+        account1.getCustomer().setName("Ronaldinhoo");
 
-        /////////////////////////////Supprimer methode to string pour voir adress memoire
+        System.out.println( account1);   // nameCustomer = Ronaldinhoo
+                                                                         // --> un autre objet customer
+        System.out.println(account3);   // // nameCustomer = zidane //
 
     }
 
